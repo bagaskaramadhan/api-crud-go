@@ -154,10 +154,10 @@ func deleteProduct(w http.ResponseWriter, r *http.Request) {
 
 	var product Product
 	json.Unmarshal(payloads, &product)
-	db.First(&product, "id = ?", productID)
+	productWillDelete := db.First(&product, "id = ?", productID)
 	db.Delete(&product).Where("id = ?", productID)
 
-	res := Result{Code: 200, Message: "Success to delete product"}
+	res := Result{Code: 200, Data: productWillDelete, Message: "Success to delete product"}
 	result, err := json.Marshal(res)
 
 	if err != nil {
